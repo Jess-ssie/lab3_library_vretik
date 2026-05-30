@@ -50,13 +50,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:hint="@string/title_label"
-                    app:boxBackgroundMode="outline">
+                    app:boxBackgroundMode="outline"
+                    app:placeholderText="@string/title_hint">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/titleEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/title_hint"
                         android:inputType="textCapSentences"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -67,13 +67,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:hint="@string/author_label"
-                    app:boxBackgroundMode="outline">
+                    app:boxBackgroundMode="outline"
+                    app:placeholderText="@string/author_hint">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/authorEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/author_hint"
                         android:inputType="textCapWords"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -84,13 +84,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:hint="@string/isbn_label"
-                    app:boxBackgroundMode="outline">
+                    app:boxBackgroundMode="outline"
+                    app:placeholderText="@string/isbn_hint">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/isbnEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/isbn_hint"
                         android:inputType="text"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -101,13 +101,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="24dp"
                     android:hint="@string/age_category_label"
-                    app:boxBackgroundMode="outline">
+                    app:boxBackgroundMode="outline"
+                    app:placeholderText="@string/age_category_hint">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ageCategoryEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/age_category_hint"
                         android:inputType="text"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
