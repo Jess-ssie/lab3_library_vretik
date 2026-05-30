@@ -50,6 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:hint="@string/title_label"
+                    app:errorIconDrawable="@null"
                     app:boxBackgroundMode="outline"
                     app:placeholderText="@string/title_hint">
 
@@ -67,6 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:hint="@string/author_label"
+                    app:errorIconDrawable="@null"
                     app:boxBackgroundMode="outline"
                     app:placeholderText="@string/author_hint">
 
@@ -84,6 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:hint="@string/isbn_label"
+                    app:errorIconDrawable="@null"
                     app:boxBackgroundMode="outline"
                     app:placeholderText="@string/isbn_hint">
 
@@ -101,6 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="24dp"
                     android:hint="@string/age_category_label"
+                    app:errorIconDrawable="@null"
                     app:boxBackgroundMode="outline"
                     app:placeholderText="@string/age_category_hint">
 

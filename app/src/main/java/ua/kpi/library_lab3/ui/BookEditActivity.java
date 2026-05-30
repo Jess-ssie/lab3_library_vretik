@@ -1,6 +1,7 @@
 package ua.kpi.library_lab3.ui;
 
 import android.os.Bundle;
+import android.database.sqlite.SQLiteConstraintException;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -28,6 +29,7 @@ public class BookEditActivity extends AppCompatActivity {
 
     private TextInputLayout titleLayout;
     private TextInputLayout authorLayout;
+    private TextInputLayout isbnLayout;
     private TextInputEditText titleEditText;
     private TextInputEditText authorEditText;
     private TextInputEditText isbnEditText;
@@ -55,6 +57,7 @@ public class BookEditActivity extends AppCompatActivity {
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         titleLayout = findViewById(R.id.titleLayout);
         authorLayout = findViewById(R.id.authorLayout);
+        isbnLayout = findViewById(R.id.isbnLayout);
         titleEditText = findViewById(R.id.titleEditText);
         authorEditText = findViewById(R.id.authorEditText);
         isbnEditText = findViewById(R.id.isbnEditText);
@@ -128,33 +131,55 @@ public class BookEditActivity extends AppCompatActivity {
             valid = false;
         }
 
+        if (isbn.isEmpty()) {
+            isbnLayout.setError(getString(R.string.isbn_required));
+            valid = false;
+        }
+
         if (!valid) {
-            Snackbar.make(findViewById(R.id.editRoot), R.string.required_fields, Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(R.id.editRoot), R.string.form_has_errors, Snackbar.LENGTH_SHORT).show();
             return;
         }
 
-        Book book = new Book(title, author, isbn, ageCategory);
-        if (bookId != -1) {
-            book.setId(bookId);
-            book.setFavorite(currentFavorite);
-        }
-
         executorService.execute(() -> {
-            if (bookId == -1) {
-                appDatabase.bookDao().insert(book);
-            } else {
-                appDatabase.bookDao().update(book);
+            int duplicateCount = appDatabase.bookDao().countBooksWithIsbn(isbn, bookId);
+            if (duplicateCount > 0) {
+                runOnUiThread(() -> {
+                    isbnLayout.setError(getString(R.string.isbn_must_be_unique));
+                    Snackbar.make(findViewById(R.id.editRoot), R.string.form_has_errors, Snackbar.LENGTH_SHORT).show();
+                });
+                return;
             }
-            runOnUiThread(() -> {
-                Toast.makeText(this, R.string.book_saved, Toast.LENGTH_SHORT).show();
-                finish();
-            });
+
+            Book book = new Book(title, author, isbn, ageCategory);
+            if (bookId != -1) {
+                book.setId(bookId);
+                book.setFavorite(currentFavorite);
+            }
+
+            try {
+                if (bookId == -1) {
+                    appDatabase.bookDao().insert(book);
+                } else {
+                    appDatabase.bookDao().update(book);
+                }
+                runOnUiThread(() -> {
+                    Toast.makeText(this, R.string.book_saved, Toast.LENGTH_SHORT).show();
+                    finish();
+                });
+            } catch (SQLiteConstraintException e) {
+                runOnUiThread(() -> {
+                    isbnLayout.setError(getString(R.string.isbn_must_be_unique));
+                    Snackbar.make(findViewById(R.id.editRoot), R.string.isbn_must_be_unique, Snackbar.LENGTH_SHORT).show();
+                });
+            }
         });
     }
 
     private void clearErrors() {
         titleLayout.setError(null);
         authorLayout.setError(null);
+        isbnLayout.setError(null);
     }
 
     private String getText(TextInputEditText editText) {

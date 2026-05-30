@@ -2,6 +2,10 @@ package ua.kpi.library_lab3.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.TextView;
+import android.view.MotionEvent;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -12,14 +16,14 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.widget.TextView;
-
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,11 +39,13 @@ public class MainActivity extends AppCompatActivity {
     private MaterialTextView emptyView;
     private TextView statsTextView;
     private ChipGroup filterChips;
+    private TextInputEditText searchEditText;
     private BookAdapter bookAdapter;
     private AppDatabase appDatabase;
     private ExecutorService executorService;
     private enum FilterMode { ALL, FAVORITES }
     private FilterMode currentFilter = FilterMode.ALL;
+    private String searchQuery = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         emptyView = findViewById(R.id.emptyView);
         statsTextView = findViewById(R.id.statsTextView);
         filterChips = findViewById(R.id.filterChips);
+        searchEditText = findViewById(R.id.searchEditText);
         FloatingActionButton fabAdd = findViewById(R.id.fabAdd);
 
         setSupportActionBar(toolbar);
@@ -97,11 +104,40 @@ public class MainActivity extends AppCompatActivity {
         });
         // default to All
         findViewById(R.id.chipAll).performClick();
+
+        findViewById(R.id.main).setOnClickListener(v -> searchEditText.clearFocus());
+        recyclerView.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                searchEditText.clearFocus();
+            }
+            return false;
+        });
+
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                searchQuery = s == null ? "" : s.toString().trim();
+                loadBooks();
+            }
+        });
+
+        searchEditText.clearFocus();
+        findViewById(R.id.main).requestFocus();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        searchEditText.clearFocus();
+        findViewById(R.id.main).requestFocus();
         loadBooks();
     }
 
@@ -119,12 +155,37 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 books = appDatabase.bookDao().getAllBooks();
             }
+
+            List<Book> filteredBooks = new ArrayList<>();
+            if (searchQuery.isEmpty()) {
+                filteredBooks.addAll(books);
+            } else {
+                String lowerQuery = searchQuery.toLowerCase();
+                for (Book book : books) {
+                    if (book.getTitle().toLowerCase().contains(lowerQuery) || book.getIsbn().toLowerCase().contains(lowerQuery)) {
+                        filteredBooks.add(book);
+                    }
+                }
+            }
+
             final int total = appDatabase.bookDao().getAllBooks().size();
             final int favCount = appDatabase.bookDao().getFavoriteBooks().size();
             runOnUiThread(() -> {
-                bookAdapter.submitList(books);
-                emptyView.setVisibility(books.isEmpty() ? android.view.View.VISIBLE : android.view.View.GONE);
-                recyclerView.setVisibility(books.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE);
+                bookAdapter.submitList(filteredBooks);
+                boolean shouldShowEmpty = filteredBooks.isEmpty();
+                emptyView.setVisibility(shouldShowEmpty ? android.view.View.VISIBLE : android.view.View.GONE);
+                recyclerView.setVisibility(shouldShowEmpty ? android.view.View.GONE : android.view.View.VISIBLE);
+                if (shouldShowEmpty) {
+                    if (!searchQuery.isEmpty()) {
+                        emptyView.setText(R.string.empty_search);
+                    } else if (currentFilter == FilterMode.FAVORITES) {
+                        emptyView.setText(R.string.empty_favorites);
+                    } else {
+                        emptyView.setText(R.string.empty_books);
+                    }
+                } else {
+                    emptyView.setText(R.string.empty_books);
+                }
                 statsTextView.setText(getString(R.string.stats_format, total, favCount));
             });
         });

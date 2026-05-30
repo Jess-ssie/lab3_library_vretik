@@ -22,6 +22,9 @@ public interface BookDao {
     @Query("SELECT * FROM books WHERE id = :id LIMIT 1")
     Book getBookById(int id);
 
+    @Query("SELECT COUNT(*) FROM books WHERE isbn = :isbn AND id != :excludedBookId")
+    int countBooksWithIsbn(String isbn, int excludedBookId);
+
     @Insert
     long insert(Book book);
 

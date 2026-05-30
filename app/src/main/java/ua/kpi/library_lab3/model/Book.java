@@ -2,9 +2,10 @@ package ua.kpi.library_lab3.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "books")
+@Entity(tableName = "books", indices = {@Index(value = {"isbn"}, unique = true)})
 public class Book {
 
     @PrimaryKey(autoGenerate = true)
