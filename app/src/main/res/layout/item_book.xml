@@ -43,6 +43,16 @@
                 android:textColor="?attr/colorOnSurfaceVariant"
                 tools:text="Robert C. Martin" />
 
+            <TextView
+                android:id="@+id/isbnTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textStyle="normal"
+                tools:text="ISBN: 9780132350884" />
+
         </LinearLayout>
 
         <ImageButton

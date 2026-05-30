@@ -12,6 +12,7 @@
     <string name="search_label">Search by title</string>
     <string name="search_placeholder">Search books by title or ISBN</string>
     <string name="isbn_label">ISBN</string>
+    <string name="isbn_card_label">ISBN: %1$s</string>
     <string name="age_category_label">Age category</string>
     <string name="title_hint">Enter book title</string>
     <string name="author_hint">Enter author name</string>

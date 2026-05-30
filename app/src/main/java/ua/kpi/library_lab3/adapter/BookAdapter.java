@@ -49,6 +49,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         Book book = books.get(position);
         holder.titleTextView.setText(book.getTitle());
         holder.authorTextView.setText(book.getAuthor());
+        holder.isbnTextView.setText(holder.itemView.getContext().getString(R.string.isbn_card_label, book.getIsbn()));
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
@@ -86,12 +87,14 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
         private final TextView titleTextView;
         private final TextView authorTextView;
+        private final TextView isbnTextView;
         private final android.widget.ImageButton favButton;
 
         BookViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.titleTextView);
             authorTextView = itemView.findViewById(R.id.authorTextView);
+            isbnTextView = itemView.findViewById(R.id.isbnTextView);
             favButton = itemView.findViewById(R.id.favButton);
         }
     }
