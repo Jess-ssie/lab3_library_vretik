@@ -35,6 +35,7 @@ public class BookEditActivity extends AppCompatActivity {
     private AppDatabase appDatabase;
     private ExecutorService executorService;
     private int bookId = -1;
+    private boolean currentFavorite = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +103,7 @@ public class BookEditActivity extends AppCompatActivity {
                 authorEditText.setText(book.getAuthor());
                 isbnEditText.setText(book.getIsbn());
                 ageCategoryEditText.setText(book.getAgeCategory());
+                currentFavorite = book.isFavorite();
             });
         });
     }
@@ -134,6 +136,7 @@ public class BookEditActivity extends AppCompatActivity {
         Book book = new Book(title, author, isbn, ageCategory);
         if (bookId != -1) {
             book.setId(bookId);
+            book.setFavorite(currentFavorite);
         }
 
         executorService.execute(() -> {

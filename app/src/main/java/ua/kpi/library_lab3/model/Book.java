@@ -1,5 +1,6 @@
 package ua.kpi.library_lab3.model;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -12,12 +13,15 @@ public class Book {
     private String author;
     private String isbn;
     private String ageCategory;
+    @ColumnInfo(defaultValue = "0")
+    private boolean favorite;
 
     public Book(String title, String author, String isbn, String ageCategory) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
         this.ageCategory = ageCategory;
+        this.favorite = false;
     }
 
     public int getId() {
@@ -58,5 +62,13 @@ public class Book {
 
     public void setAgeCategory(String ageCategory) {
         this.ageCategory = ageCategory == null ? "" : ageCategory;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 }

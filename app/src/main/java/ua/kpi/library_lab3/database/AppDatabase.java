@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 
 import ua.kpi.library_lab3.model.Book;
 
-@Database(entities = {Book.class}, version = 1, exportSchema = false)
+@Database(entities = {Book.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static volatile AppDatabase instance;
@@ -23,7 +23,9 @@ public abstract class AppDatabase extends RoomDatabase {
                             context.getApplicationContext(),
                             AppDatabase.class,
                             "library_db"
-                    ).build();
+                    )
+                    .fallbackToDestructiveMigration()
+                    .build();
                 }
             }
         }

@@ -16,6 +16,9 @@ public interface BookDao {
     @Query("SELECT * FROM books ORDER BY title COLLATE NOCASE ASC")
     List<Book> getAllBooks();
 
+    @Query("SELECT * FROM books WHERE favorite = 1 ORDER BY title COLLATE NOCASE ASC")
+    List<Book> getFavoriteBooks();
+
     @Query("SELECT * FROM books WHERE id = :id LIMIT 1")
     Book getBookById(int id);
 

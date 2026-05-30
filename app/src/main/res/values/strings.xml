@@ -22,4 +22,7 @@
     <string name="book_saved">Book saved</string>
     <string name="book_deleted">Book deleted</string>
     <string name="book_not_found">Book not found</string>
+    <string name="stats_format">Total books: %1$d   Favorites: %2$d</string>
+    <string name="added_to_favorites">Added to favorites</string>
+    <string name="removed_from_favorites">Removed from favorites</string>
 </resources>

@@ -18,8 +18,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
     public interface OnBookActionListener {
         void onBookClick(Book book);
-
         void onBookLongClick(Book book);
+        void onFavoriteClick(Book book);
     }
 
     private final List<Book> books = new ArrayList<>();
@@ -62,6 +62,19 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             }
             return true;
         });
+
+        // favorite button state
+        if (book.isFavorite()) {
+            holder.favButton.setImageResource(R.drawable.ic_star_filled_24);
+        } else {
+            holder.favButton.setImageResource(R.drawable.ic_star_outline_24);
+        }
+
+        holder.favButton.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onFavoriteClick(book);
+            }
+        });
     }
 
     @Override
@@ -73,11 +86,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
         private final TextView titleTextView;
         private final TextView authorTextView;
+        private final android.widget.ImageButton favButton;
 
         BookViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.titleTextView);
             authorTextView = itemView.findViewById(R.id.authorTextView);
+            favButton = itemView.findViewById(R.id.favButton);
         }
     }
 }
