@@ -29,6 +29,7 @@
     <string name="book_deleted">Book deleted</string>
     <string name="book_not_found">Book not found</string>
     <string name="isbn_required">ISBN is required.</string>
+    <string name="isbn_allowed_characters">ISBN can contain only digits and hyphens.</string>
     <string name="isbn_must_be_unique">ISBN must be unique.</string>
     <string name="stats_format">Total books: %1$d   Favorites: %2$d</string>
     <string name="added_to_favorites">Added to favorites</string>

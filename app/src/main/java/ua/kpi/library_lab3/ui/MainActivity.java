@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             }
             loadBooks();
         });
-        // default to All
+
         findViewById(R.id.chipAll).performClick();
 
         findViewById(R.id.main).setOnClickListener(v -> searchEditText.clearFocus());

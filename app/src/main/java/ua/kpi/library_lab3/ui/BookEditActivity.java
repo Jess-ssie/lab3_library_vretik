@@ -134,6 +134,9 @@ public class BookEditActivity extends AppCompatActivity {
         if (isbn.isEmpty()) {
             isbnLayout.setError(getString(R.string.isbn_required));
             valid = false;
+        } else if (!isValidIsbnCharacters(isbn)) {
+            isbnLayout.setError(getString(R.string.isbn_allowed_characters));
+            valid = false;
         }
 
         if (!valid) {
@@ -187,5 +190,9 @@ public class BookEditActivity extends AppCompatActivity {
             return "";
         }
         return editText.getText().toString().trim();
+    }
+
+    private boolean isValidIsbnCharacters(String isbn) {
+        return isbn.matches("[0-9-]+");
     }
 }
